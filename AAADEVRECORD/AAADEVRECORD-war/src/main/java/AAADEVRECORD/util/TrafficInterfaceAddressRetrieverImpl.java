@@ -32,7 +32,7 @@ public final class TrafficInterfaceAddressRetrieverImpl implements TrafficInterf
 
         if (logger.isFinestEnabled())
         {
-            logger.finest("getTrafficInterfaceAddress: entity ip addr=" + localAsset);
+            
         }
 
         return localAsset;

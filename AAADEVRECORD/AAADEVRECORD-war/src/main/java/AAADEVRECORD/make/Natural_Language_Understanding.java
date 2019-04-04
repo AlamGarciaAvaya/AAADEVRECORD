@@ -19,6 +19,7 @@ import org.apache.http.impl.client.HttpClients;
 import org.json.JSONObject;
 
 import service.AAADEVRECORD.LanguageAttribute;
+import AAADEVRECORD.util.BuscarYRemplazarAcentos;
 import AAADEVRECORD.util.Constants;
 
 import com.avaya.collaboration.businessdata.api.NoAttributeFoundException;
@@ -26,6 +27,7 @@ import com.avaya.collaboration.businessdata.api.ServiceNotFoundException;
 import com.avaya.collaboration.call.Call;
 import com.avaya.collaboration.ssl.util.SSLProtocolType;
 import com.avaya.collaboration.ssl.util.SSLUtilityFactory;
+import com.avaya.collaboration.util.logger.Logger;
 
 
 /**
@@ -41,17 +43,27 @@ import com.avaya.collaboration.ssl.util.SSLUtilityFactory;
  */
 @SuppressWarnings("deprecation")
 public class Natural_Language_Understanding {
-	
+	private static final Logger logger = Logger
+			.getLogger(Natural_Language_Understanding.class);
 	public String[] main(String args, Call call) throws NoAttributeFoundException, ServiceNotFoundException {
 		String text = args;
 		LanguageAttribute languageAttribute = new LanguageAttribute(call);
 		if(languageAttribute.getLanguageAttribute().equals("es")){
 			//Model Languaje Translator es-en
+			
+			BuscarYRemplazarAcentos español = new BuscarYRemplazarAcentos();
+			text = español.Español(text);
 			text = Languaje_Translator.main(text, "es-en");
+			logger.info("Texto traducido: " + text);
+			
 		}
 		if(languageAttribute.getLanguageAttribute().equals("pt")){
 			//Model Languaje Translator pt-en
+			
+			BuscarYRemplazarAcentos portugues = new BuscarYRemplazarAcentos();
+			text = portugues.Portugues(text);
 			text = Languaje_Translator.main(text, "pt-en");
+			logger.info("Texto traducido: " + text);
 		}
 		/*
 		 * HTTPS
@@ -66,8 +78,8 @@ public class Natural_Language_Understanding {
 			provider.setCredentials(AuthScope.ANY,
 					new UsernamePasswordCredentials(user, password));
 			String encodedMessage = URLEncoder.encode(text, "UTF-8");
-			final String URI = "https://gateway.watsonplatform.net/natural-language-understanding/api/v1/analyze?version=2018-05-01&text="
-					+encodedMessage+"&features=emotion&return_analyzed_text=false&clean=true&fallback_to_raw=true&concepts.limit=8&emotion.document=true&entities.limit=50&keywords.limit=50&sentiment.document=true";
+			final String URI = "https://gateway.watsonplatform.net/natural-language-understanding/api/v1/analyze?version=2018-11-16&text="
+					+encodedMessage+"&features=emotion&return_analyzed_text=false&clean=true&fallback_to_raw=true&concepts.limit=8&emotion.document=true&entities.limit=200&keywords.limit=200&sentiment.document=true";
 
 		      HttpClient client = HttpClients.custom().setSslcontext(sslContext).setHostnameVerifier(new AllowAllHostnameVerifier()).build();
 		      HttpGet getMethod = new HttpGet(URI);
@@ -90,7 +102,7 @@ public class Natural_Language_Understanding {
 			while ((line = inputStream.readLine()) != null) {
 				result.append(line);
 			}
-			
+			logger.info("Respuesta NLU: " + result.toString());
 			JSONObject json = new JSONObject(result.toString());
 			
 			String sadness = json.getJSONObject("emotion").getJSONObject("document").getJSONObject("emotion").getString("sadness");
@@ -100,7 +112,7 @@ public class Natural_Language_Understanding {
 			String anger = json.getJSONObject("emotion").getJSONObject("document").getJSONObject("emotion").getString("anger");
 			
 			
-			String [] arregloEmociones = {sadness, joy, fear, disgust, anger};
+			String [] arregloEmociones = {anger, disgust, fear, joy, sadness};
 			inputStream.close();
 			return arregloEmociones;
 			

@@ -37,7 +37,7 @@ public class MediaOperations {
      * playTtsPrompt recibe como argumentos, el texto que será reproducido y el participante al cual será reproducido.
      */
     public void playTtsPrompt(final String Beep, final Participant participant)
-    {	logger.info("MediaOperations, playTtsPrompt()");
+    {	
         try
         {
             final PlayItem playItem = MediaFactory.createPlayItem();
@@ -46,7 +46,6 @@ public class MediaOperations {
                     .setIterateCount(1);
   
             final UUID requestId = mediaService.play(participant, playItem, mediaListener);
-            logger.info("playTtsPrompt prompt = \"" + Beep + "\", requestId = " + requestId);
         }
         catch (final Exception exception)
         {
@@ -56,7 +55,7 @@ public class MediaOperations {
     }
     
     public void promptAndCollect(final String textToSpeak, final int numberOfDigits, final Participant participant)
-    {	logger.info("MediaOperations, promptAndCollect()");
+    {	
         try
         {	
         	/*
@@ -76,7 +75,6 @@ public class MediaOperations {
             
   
             final UUID requestId = mediaService.promptAndCollect(participant, playItem, digitOptions, mediaListener);
-            logger.info("promptAndCollect prompt = \"" + textToSpeak + "\", requestId = " + requestId);
         }
         catch (final Exception exception)
         {
@@ -86,7 +84,7 @@ public class MediaOperations {
     }
     
     public void record(final Participant participant)
-    {	logger.info("MediaOperations, record()");
+    {
     	/*
     	 * Recupera la ruta del archivo guardado
     	 */
@@ -113,7 +111,7 @@ public class MediaOperations {
     }
     
     public String formRecordingPlayUrl()
-    {	logger.info("MediaOperations, formRecordingPlayUrl()");
+    {	
     /*
      * Define la ruta para reproducir el archivo que fue grabado
      */
@@ -132,7 +130,7 @@ public class MediaOperations {
     }
 
     private String formRecordingStoreUrl()
-    {	logger.info("MediaOperations, formRecordingStoreUrl()");
+    {	
     /*
      * Define la ruta del archivo grabado para ser almacenado (incluye StoreRecordingServlet)
      * Pribar si hace un POST al Servlet StoreRecordingServlet

@@ -65,7 +65,6 @@ public class Watson_Assistant {
 			/*
 			 * HTTP
 			 */
-			
 			String userNameAssistant = AttributeStore.INSTANCE.getAttributeValue(Constants.WA_USER_NAME);
 			String passwordAssistant =  AttributeStore.INSTANCE.getAttributeValue(Constants.WA_PASSWORD);
 			final SSLProtocolType protocolTypeAssistant = SSLProtocolType.TLSv1_2;
@@ -93,7 +92,7 @@ public class Watson_Assistant {
 					.printBase64Binary(authStringAssistant.getBytes());
 			postMethodAssistant.addHeader("Authorization", "Basic "
 					+ authEncBytesAssistant);
-
+			logger.info("Watson_Assistant Text: " + text);
 			final String messageBodyAssistant = "{\"input\": {\"text\": \""
 					+ text + "\"}}";
 			final StringEntity conversationEntityAssistant = new StringEntity(
@@ -125,9 +124,24 @@ public class Watson_Assistant {
 				confidence = object.get("confidence").toString();
 
 			}
-			
 			intent2 = definirIntent(intent2, call);
-		}catch(Exception e){
+
+		}catch(NullPointerException e){
+			logger.error("Error en Watson_Assistant " + e);
+			String Error = null;
+			LanguageAttribute languageAttribute = new LanguageAttribute(call);
+			if (languageAttribute.getLanguageAttribute().equals("es")) {
+				Error = "SERVICIO_A_CLIENTES";
+			}
+			if (languageAttribute.getLanguageAttribute().equals("en")) {
+				Error = "CUSTOMER_SERVICE";
+			}
+			if (languageAttribute.getLanguageAttribute().equals("pt")) {
+				Error = "ATENDIMENTO_AO_CLIENTE";
+			}
+			return Error;
+		}
+		catch(Exception e){
 			logger.error("Error en Watson_Assistant " + e);
 			String Error = "Error en Watson_Assistant " + e;
 			return Error;
@@ -184,21 +198,6 @@ public class Watson_Assistant {
 			}
 
 		}
-		if (intent.equals("PRESENTACION")) {
-			if (languageAttribute.getLanguageAttribute().equals("es")) {
-				intencion = "SERVICIO_A_CLIENTES";
-
-			}
-			if (languageAttribute.getLanguageAttribute().equals("en")) {
-				intencion = "CUSTOMER_SERVICE";
-
-			}
-			if (languageAttribute.getLanguageAttribute().equals("pt")) {
-				intencion = "ATENDIMENTO_AO_CLIENTE";
-
-			}
-
-		}
 		if (intent.equals("SERVICIO_A_CLIENTES")) {
 			if (languageAttribute.getLanguageAttribute().equals("es")) {
 				intencion = "SERVICIO_A_CLIENTES";
@@ -215,7 +214,7 @@ public class Watson_Assistant {
 			}
 
 		}
-		if (intent.equals("Irrelevant")) {
+		if (intent.equals(null)) {
 			if (languageAttribute.getLanguageAttribute().equals("es")) {
 				intencion = "SERVICIO_A_CLIENTES";
 

@@ -29,8 +29,6 @@ public class RecordingStateMachine {
 	}
 
 	public void start() {
-		logger.info("RecordingStateMachine, start()");
-
 		final MediaOperations mediaOperations = new MediaOperations(
 				recorderMediaListener);
 		try {
@@ -51,8 +49,6 @@ public class RecordingStateMachine {
 			/*------------------------------------------------------------------------------*/
 			mediaOperations.playTtsPrompt(sb.toString(),call.getCallingParty());
 			currentState = new PlayRecordPrompt();
-			logger.info("RecordingStateMachine starting in state "
-					+ currentState.getStateName());
 		} catch (final Exception exception) {
 			logger.error("start dropping call due to exception: ", exception);
 			call.drop();
@@ -60,20 +56,13 @@ public class RecordingStateMachine {
 	}
 
 	public void playCompleted(UUID requestId, PlayOperationCause cause) {
-		logger.info("RecordingStateMachine, playCompleted");
-		
 
-		
-		
 		checkStateTransition(currentState.playCompleted(call, requestId, cause,
 				recorderMediaListener));
-		
-
 	}
 
 	public void digitsCollected(UUID requestId, String digits,
 			DigitCollectorOperationCause cause) {
-		logger.info("RecordingStateMachine, digitsCollected");
 		checkStateTransition(currentState.digitsCollected(call, requestId,
 				digits, cause, recorderMediaListener));
 	}
@@ -81,66 +70,14 @@ public class RecordingStateMachine {
 	public void recordCompleted(UUID requestId, RecordOperationCause cause)
 			throws URISyntaxException, NoAttributeFoundException,
 			ServiceNotFoundException {
-		logger.info("RecordingStateMachine, recordCompleted");
 		checkStateTransition(currentState.recordCompleted(call, requestId,
 				cause, recorderMediaListener));
-
-
-
-
-				
-//				logger.info("playHelsinky");
-//				call.getCallPolicies().setMediaServerInclusion(
-//						MediaServerInclusion.AS_NEEDED);
-//
-//				final StringBuilder sb = new StringBuilder();
-//				sb.append("http://135.169.18.7/services/AAADEVRECORD/Helsinki.wav");
-//
-//				PlayItem playItem = null;
-//				try {
-//					playItem = MediaFactory.createPlayItem().setInterruptible(true)
-//							.setIterateCount(1)
-//							.setSource(sb.toString());
-//				} catch (URISyntaxException e) {
-//					logger.error("Error: " + e);
-//				}
-//
-//				 MediaService mediaServicehelsinky = MediaFactory.createMediaService();
-//				 Participant participanthelsinky = call.getCallingParty();
-//				logger.info("playHelsinki handle " + participanthelsinky.getHandle());
-//				final MyMediaListener3 myMediaListener3 = new MyMediaListener3();
-//
-//				UUID requestidhelsinki = mediaServicehelsinky.play(participanthelsinky, playItem,
-//						myMediaListener3);
-//				
-//				
-//				logger.info("Requestid playHelsinki: " + requestidhelsinki);
-//				
-//				
-//				
-//				long start = System.currentTimeMillis();
-//				
-//				try {
-//					Thread.sleep(10000);
-//					mediaServicehelsinky.stop(participanthelsinky, requestidhelsinki);
-//				} catch (InterruptedException e) {
-//					// TODO Auto-generated catch block
-//					e.printStackTrace();
-//				}
-//				long end = System.currentTimeMillis();
-//				logger.info("Tiempo de espera " + (end - start));
-		
-		
-		
+	
 		
 	}
 
 	private void checkStateTransition(final BasicState nextState) {
 		if (nextState != null) {
-			logger.info("RecordingStateMachine, checkStateTransition() changing state from "
-					+ currentState.getStateName()
-					+ " to "
-					+ nextState.getStateName());
 			currentState = nextState;
 		}
 	}

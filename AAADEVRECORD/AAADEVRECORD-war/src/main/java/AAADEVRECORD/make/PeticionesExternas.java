@@ -36,7 +36,6 @@ public class PeticionesExternas {
 			MediaService mediaServicehelsinky)
 			throws NoAttributeFoundException, ServiceNotFoundException,
 			URISyntaxException {
-		logger.info("peticionesExternas");
 		JSONObject json = null;
 		String text = null;
 		String intent = null;
@@ -176,17 +175,13 @@ public class PeticionesExternas {
 			}
 			if (languageAttribute.getLanguageAttribute().equals("en")) {
 				emailBody
-						.append("\n Liga del audio: https://"
-								+ trafficInterfaceAddress
-								+ "/services/AAADEVCONTROLPAD/ControladorGrabaciones/web/RecordEn/"
+						.append("\n Liga del audio: "+AttributeStore.INSTANCE.getAttributeValue(Constants.EMAIL_USE)+"/web/RecordEn/"
 								+ nombreWav + ".wav");
 
 			}
 			if (languageAttribute.getLanguageAttribute().equals("pt")) {
 				emailBody
-						.append("\n Liga del audio: https://"
-								+ trafficInterfaceAddress
-								+ "/services/AAADEVCONTROLPAD/ControladorGrabaciones/web/RecordPt/"
+						.append("\n Liga del audio: "+AttributeStore.INSTANCE.getAttributeValue(Constants.EMAIL_USE)+"/web/RecordPt/"
 								+ nombreWav + ".wav");
 
 			}

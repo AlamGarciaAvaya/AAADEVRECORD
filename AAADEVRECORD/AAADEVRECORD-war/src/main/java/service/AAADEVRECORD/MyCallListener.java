@@ -45,12 +45,10 @@ public class MyCallListener extends CallListenerAbstract {
 		logger.fine("Entered callIntercepted.");
 
 		if (call.isCalledPhase()) {
-			logger.info("Snap-in sequenced in called phase");
 			boolean playWelcome = false;
 
 			try {
 				promptPlayAndExecute(call, playWelcome);
-				logger.info("MyCallListener despues de: promptCollectAndExecute");
 
 			} catch (final URISyntaxException e) {
 				logger.error("Error doing prompt and collect", e);
@@ -71,30 +69,22 @@ public class MyCallListener extends CallListenerAbstract {
 
 	@Override
 	public void callAlerting(final Participant participant) {
-
-		logger.info("callAlerting enter, alerting party = "
-				+ participant.getAddress());
 	}
 
 	@Override
 	public void participantDropped(final Call call,
 			final Participant droppedParticipant,
 			final CallTerminationCause cause) {
-		logger.info("participantDropped enter, participant = "
-				+ droppedParticipant.getAddress());
-		call.drop();
 
 	}
 
 	@Override
 	public void callAnswered(final Call call) {
-		logger.info("callAnswered");
 		call.allow();
 	}
 
 	@Override
 	public void callTerminated(final Call call, final CallTerminationCause cause) {
-		logger.info("Call Terminated");
 		/*
 		 * public final class CallTerminationCause extends Enum An enumeration
 		 * of the Call Termination Cause which can be used to find reason of
@@ -123,7 +113,6 @@ public class MyCallListener extends CallListenerAbstract {
 			throws URISyntaxException, NoAttributeFoundException,
 			ServiceNotFoundException, NoUserFoundException,
 			NoServiceProfileFoundException {
-		logger.info("executePromptAndCollectOperation ENTER setting MediaServerInclusion.AS_NEEDED");
 		// set the Media Inclusion Policy to AS_NEEDED. Media Server is not
 		// required for the whole duration of the call.
 		call.getCallPolicies().setMediaServerInclusion(
@@ -169,7 +158,6 @@ public class MyCallListener extends CallListenerAbstract {
 		final MediaService mediaService = MediaFactory.createMediaService();
 		final Participant participant = call.getCallingParty();
 		final MyMediaListener myMediaListener = new MyMediaListener(call);
-		logger.info("audio de saludo: " + sb.toString());
 		mediaService.play(participant, playItem, myMediaListener);
 	}
 }

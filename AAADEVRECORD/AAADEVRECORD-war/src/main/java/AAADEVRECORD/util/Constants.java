@@ -16,5 +16,7 @@ public class Constants {
 	public static final String WA_CURRENT_VERSION = "WACurrentVersion";
 	public static final String LT_API_KEY = "ltapikey";
 	public static final String GOOGLE_CLOUD_SPEECH_TO_TEXT = "GoogleCloudSpeechToText";
-	
+	public static final String GOOGLE_POST = "GooglePost";
+	public static final String EMAIL_FROM = "emailFrom";
+	public static final String EMAIL_USE = "endPoint";
 }

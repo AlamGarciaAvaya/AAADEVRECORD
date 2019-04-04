@@ -21,7 +21,6 @@ public class RecordMessage implements BasicState {
 	@Override
 	public BasicState playCompleted(final Call call, final UUID requestId,
 			final PlayOperationCause cause, final MediaListener mediaListener) {
-		logger.error("playCompleted not expected in RecordMessage state, dropping call");
 		call.drop();
 		return new Done();
 	}
@@ -30,7 +29,6 @@ public class RecordMessage implements BasicState {
 	public BasicState digitsCollected(final Call call, final UUID requestId,
 			final String digits, final DigitCollectorOperationCause cause,
 			final MediaListener mediaListener) {
-		logger.error("digitsCollected not expected in RecordMessage state, dropping call");
 		call.drop();
 		return new Done();
 	}
@@ -46,9 +44,6 @@ public class RecordMessage implements BasicState {
 		
 			
 		if (cause == RecordOperationCause.TERMINATION_KEY_PRESSED) {
-			logger.info("Termimno la grabación");
-			
-			logger.info("Termino de Grabar, peticion de Transcript");
 			
 				try {
 					playHelsinki play = new playHelsinki(call);
@@ -58,10 +53,7 @@ public class RecordMessage implements BasicState {
 					playError.audioError();
 					logger.info("Error RecordMessage: " + e);
 				}
-				
-		
 
-			
 			return new Done();
 			} else {
 			logger.error("RecordMessage.recordCompleted dropping call due to unexpected cause");

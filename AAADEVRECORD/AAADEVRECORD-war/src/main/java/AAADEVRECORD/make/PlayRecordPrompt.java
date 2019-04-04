@@ -20,7 +20,6 @@ public class PlayRecordPrompt implements BasicState {
     public BasicState playCompleted(final Call call, final UUID requestId, final PlayOperationCause cause,
             final MediaListener mediaListener)
     {
-        logger.info("playCompleted in PlayRecordPrompt, requestId = " + requestId + ", cause = " + cause);
         if (cause == PlayOperationCause.COMPLETE)
         {
             // Start recording the caller.
@@ -39,7 +38,6 @@ public class PlayRecordPrompt implements BasicState {
     public BasicState digitsCollected(final Call call, final UUID requestId, final String digits,
             final DigitCollectorOperationCause cause, final MediaListener mediaListener)
     {
-        logger.error("digitsCollected not expected in PlayRecordPrompt state, dropping call");
         call.drop();
         return new Done();
     }
@@ -48,7 +46,6 @@ public class PlayRecordPrompt implements BasicState {
     public BasicState recordCompleted(final Call call, final UUID requestId, final RecordOperationCause cause,
             final MediaListener mediaListener)
     {
-        logger.error("recordCompleted not expected in PlayRecordPrompt state, dropping call");
         call.drop();
         return new Done();
     }

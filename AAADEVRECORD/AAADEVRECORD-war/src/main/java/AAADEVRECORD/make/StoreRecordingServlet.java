@@ -157,11 +157,9 @@ public class StoreRecordingServlet extends HttpServlet {
 	protected void doPut(final HttpServletRequest request,
 			final HttpServletResponse response) throws ServletException,
 			IOException {
-		logger.info("StoreRecordingServlet doPut ENTER");
 		final File playPrevRecordedFile = getFile(request, response);
 
 		if (playPrevRecordedFile.exists()) {
-			logger.finer("StoreRecordingServlet doPut record file exists");
 			response.setContentType("text/plain");
 			PrintWriter pw = response.getWriter();
 			pw.write("EXISTS");
@@ -173,12 +171,10 @@ public class StoreRecordingServlet extends HttpServlet {
 	protected void doDelete(final HttpServletRequest request,
 			final HttpServletResponse response) throws ServletException,
 			IOException {
-		logger.info("StoreRecordingServlet doDelete ENTER");
 		final ServletContext callableServiceServletContext = getServletContext();
 		final String contextPath = callableServiceServletContext
 				.getRealPath("/");
 		final String filename = RecordingData.INSTANCE.getRecordingFilename();
-		logger.info(filename);
 		if (filename != null) {
 			final File audioFile = new File(contextPath, filename);
 			logger.info("Is file exstis " + audioFile.exists());
@@ -208,7 +204,6 @@ public class StoreRecordingServlet extends HttpServlet {
 		 */
 		final ServletContext callableServiceServletContext = getServletContext();
 
-		logger.info("StoreRecordingServlet doGet callableServiceServletContext");
 		logger.info(callableServiceServletContext);
 
 		/*
@@ -222,7 +217,6 @@ public class StoreRecordingServlet extends HttpServlet {
 		final String contextPath = callableServiceServletContext
 				.getRealPath("/");
 
-		logger.info("StoreRecordingServlet doGet contextPath");
 		logger.info(contextPath);
 
 		/*
@@ -230,8 +224,6 @@ public class StoreRecordingServlet extends HttpServlet {
 		 */
 		final String filename = RecordingData.INSTANCE.getRecordingFilename();
 
-		logger.info("StoreRecordingServlet doGet filename");
-		logger.info(filename);
 
 		if (filename != null) {
 			/*
@@ -270,9 +262,6 @@ public class StoreRecordingServlet extends HttpServlet {
 				final FileInputStream audioFileStream = new FileInputStream(
 						audioFile);
 
-				logger.info("StoreRecordingServlet doGet audioFileStream");
-				logger.info(audioFileStream);
-				logger.info(audioFile.getAbsoluteFile());
 				/*
 				 * Returns a PrintWriter object that can send character text to
 				 * the client.
@@ -286,8 +275,6 @@ public class StoreRecordingServlet extends HttpServlet {
 					 */
 					out.write(data);
 				}
-				logger.info("StoreRecordingServlet doGet data");
-				logger.info(data);
 
 				out.close();
 				audioFileStream.close();

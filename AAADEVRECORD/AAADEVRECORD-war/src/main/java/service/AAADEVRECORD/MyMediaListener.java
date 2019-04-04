@@ -27,31 +27,24 @@ public class MyMediaListener extends MediaListenerAbstract{
     @Override
     public void playCompleted(final UUID requestId, final PlayOperationCause cause)
     {
-        logger.info("MyMediaListener, Play completed with the cause " + cause);
-        logger.info("MyMediaListener, requestId: " + requestId);
         
         final RecordingStateMachine recordingStateMachine = new RecordingStateMachine(call);
         recordingStateMachine.start();
-        
-        logger.info("MyMediaListener End");
     }
     
     @Override
     public void digitsCollected(final UUID requestId, final String digits, final DigitCollectorOperationCause cause)
     {
-    	logger.info("digitsCollected not expected, requestId = " + requestId);
     }
     
     @Override
     public void sendDigitsCompleted(final UUID requestId, final SendDigitsOperationCause cause)
     {
-        logger.info("sendDigitsCompleted not expected, requestId = " + requestId);
     }
     
     @Override
     public void recordCompleted(final UUID requestId, final RecordOperationCause cause)
     {
-        logger.info("recordCompleted not expected, requestId = " + requestId);
     }
 
 }

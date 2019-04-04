@@ -1,8 +1,11 @@
 package service.AAADEVRECORD;
 
+import AAADEVRECORD.make.AttributeStore;
 import AAADEVRECORD.util.Constants;
 
 import com.avaya.collaboration.bus.CollaborationBusException;
+import com.avaya.collaboration.businessdata.api.NoAttributeFoundException;
+import com.avaya.collaboration.businessdata.api.ServiceNotFoundException;
 import com.avaya.collaboration.call.Call;
 import com.avaya.collaboration.email.EmailFactory;
 import com.avaya.collaboration.email.EmailRequest;
@@ -14,18 +17,17 @@ public final class MyEmailSender
 
     private final Logger logger = Logger.getLogger(getClass());
 
-    public void sendEmail(final String emailTo, final String emailSubject, final String emailBody)
+    public void sendEmail(final String emailTo, final String emailSubject, final String emailBody) throws NoAttributeFoundException, ServiceNotFoundException
     {
         final EmailRequest emailRequest = EmailFactory.createEmailRequest();
         emailRequest.addTo(emailTo);
-        emailRequest.setFrom("lab132@collaboratory.avaya.com");
+        emailRequest.setFrom(AttributeStore.INSTANCE.getAttributeValue(Constants.EMAIL_FROM));
         emailRequest.setSubject(emailSubject);
         emailRequest.setTextBody(emailBody);
         emailRequest.setListener(new MyEmailListener(emailRequest));
         
         try
         {
-        	logger.info("Antes de enviar el email: "+ emailTo + emailSubject + emailBody + emailRequest);
             emailRequest.send();
         }
         catch (final CollaborationBusException e)
@@ -34,7 +36,7 @@ public final class MyEmailSender
         }
     }
 
-    public void sendCallAlertEmail(final Call call)
+    public void sendCallAlertEmail(final Call call) throws NoAttributeFoundException, ServiceNotFoundException
     {
         this.sendEmail(Constants.EMAIL, "Call Alert", call.getCallingParty()
 		        .getAddress() +
